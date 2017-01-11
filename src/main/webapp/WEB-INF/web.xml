@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+  
+	<display-name>Archetype Created Web Application</display-name>   
+	<listener>
+		<!-- <listener-class>com.practise.core.listener.GobalListener</listener-class> -->
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class><!-- 采用springframework框架中的监听 -->
+	</listener>
+	 
+    <servlet>    
+        <servlet-name>springmvc</servlet-name>    
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>   
+        <init-param>
+			<param-name>contextConfigLocation</param-name><!-- 重写DispatcherServlet类的默认参数 -->
+			<param-value>classpath:applicationContext.xml</param-value>
+		</init-param> 
+        <load-on-startup>1</load-on-startup>  <!-- 让这个Servlet随Servletp容器一起启动 -->
+    </servlet>    
+    <servlet-mapping>    
+        <servlet-name>springmvc</servlet-name>    
+        <!-- '/'拦截所有请求,会将连接bootstrap的文件也当做请求交给mvc处理，会影响页面展示 -->
+        <url-pattern>/</url-pattern>    <!-- 拦截所有以html结尾的请求 -->
+    </servlet-mapping>    
+    
+    <filter>
+		<filter-name>sessionFilter</filter-name>
+		<filter-class>com.test.springmvc.controller.LoginFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>sessionFilter</filter-name>
+		<url-pattern>/</url-pattern>
+		<url-pattern>*.jsp</url-pattern>
+		<!-- 之前拦截地址写为'/*'，现改为'/'和'*.jsp' -->
+		<!-- 因为'/*'会拦截所有请求，包括controller返回回来要在页面显示的html -->
+	</filter-mapping>
+</web-app> 
